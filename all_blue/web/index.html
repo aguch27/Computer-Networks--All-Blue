@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#103f46">
+  <title>All Blue · Network Observatory</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#overview">Skip to network overview</a>
+  <header class="site-header">
+    <div class="navigation container">
+      <a class="brand" href="#overview" aria-label="All Blue overview">
+        <img src="/favicon.svg" alt="" width="34" height="34">
+        <span>All Blue<span class="brand-note">NETWORK OBSERVATORY</span></span>
+      </a>
+      <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav">Menu <span aria-hidden="true">☰</span></button>
+      <nav id="main-nav" aria-label="Main navigation">
+        <a href="#overview" aria-current="location">Overview</a>
+        <a href="#network">Traffic</a>
+        <a href="#hosts">Hosts</a>
+        <a href="#activity">Firewall</a>
+        <a href="#events">Events</a>
+      </nav>
+      <span class="local-label"><span aria-hidden="true"></span> Local lab</span>
+    </div>
+  </header>
+
+  <main>
+    <section id="overview" class="overview" aria-labelledby="page-title">
+      <div class="hero">
+        <div class="hero-inner container">
+          <div class="hero-copy">
+            <p class="eyebrow">ALL BLUE / NETWORK MONITORING</p>
+            <h1 id="page-title">Your local<br><strong>network.</strong></h1>
+            <p class="hero-description">Traffic, firewall decisions and security events.<br>One view of your lab.</p>
+            <a class="button" href="#network">View traffic <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="hero-status">
+            <p class="eyebrow">LAB STATUS</p>
+            <span id="connection" class="badge neutral" role="status">Connecting…</span>
+            <div class="sample"><span>Last switch sample</span><strong id="sample-time">—</strong></div>
+            <p>Local controls · refreshes every 2 seconds</p>
+          </div>
+        </div>
+      </div>
+      <div class="container overview-content">
+        <div class="metrics" aria-label="Network summary">
+          <article class="metric">
+            <span class="metric-label">Switch flow entries</span><strong id="metric-rules">—</strong>
+            <p>Identity, policy and drop rules</p>
+          </article>
+          <article class="metric">
+            <span class="metric-label">Observed tuple episodes</span><strong id="metric-tuples">—</strong>
+            <p>Tracked tuples, not connection count</p>
+          </article>
+          <article class="metric">
+            <span class="metric-label">Confirmed host blocks</span><strong id="metric-blocks">—</strong>
+            <p>Last verified switch state</p>
+          </article>
+          <article class="metric">
+            <span class="metric-label">Audit backlog</span><strong id="metric-backlog">—</strong>
+            <p id="audit-detail">Waiting for the TCP logger</p>
+          </article>
+        </div>
+        <p id="notice" class="notice neutral" role="status">Connecting to the local service…</p>
+        <div class="overview-grid">
+          <article class="chart-panel" aria-labelledby="chart-title">
+            <div class="panel-heading">
+              <div><p class="eyebrow">01 / TRAFFIC</p><h2 id="chart-title">Traffic through the switch</h2></div>
+              <span class="section-note">Last 90 samples</span>
+            </div>
+            <div class="chart-value"><strong id="chart-total">—</strong><span>bytes in current tuple rules</span></div>
+            <div class="chart-wrap">
+              <svg id="chart" viewBox="0 0 700 150" role="img" aria-label="Byte counters for currently installed tuple rules"></svg>
+              <p id="chart-empty" class="chart-empty">Traffic observations will appear when the switch connects.</p>
+            </div>
+            <div class="chart-footer"><span>Earlier</span><span>Rule expiry and restarts reset counters.</span><span>Latest</span></div>
+          </article>
+          <article class="health-panel" aria-labelledby="health-title">
+            <div class="panel-heading"><div><p class="eyebrow">SERVICE STATUS</p><h2 id="health-title">System health</h2></div></div>
+            <ul class="health-list">
+              <li><span aria-hidden="true">01</span><div><strong>OpenFlow controller</strong><small id="health-controller">Awaiting state</small></div></li>
+              <li><span aria-hidden="true">02</span><div><strong>Traffic collection</strong><small id="health-telemetry">No sample yet</small></div></li>
+              <li><span aria-hidden="true">03</span><div><strong>Central TCP logger</strong><small id="health-logger">Awaiting state</small></div></li>
+            </ul>
+            <div class="run-info"><span>Policy version</span><code id="policy-version">—</code></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="network" class="container section" aria-labelledby="traffic-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">02 / NETWORK MONITOR</p><h2 id="traffic-title">Current traffic rules</h2></div>
+        <span id="flow-count" class="subtle-pill">Awaiting data</span>
+      </div>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Traffic rules; scroll horizontally for more columns">
+        <table>
+          <thead><tr><th scope="col">Source → destination</th><th scope="col">TCP ports</th><th scope="col">Decision</th><th scope="col">Direction</th><th scope="col">Packets</th><th scope="col">Bytes</th></tr></thead>
+          <tbody id="flows"><tr><td colspan="6" class="empty">Waiting for switch observations.</td></tr></tbody>
+        </table>
+      </div>
+      <p class="table-note">Exact IPv4/TCP tuples and switch counters. Host bindings do not identify an application or process.</p>
+    </section>
+
+    <section id="hosts" class="hosts-section" aria-labelledby="hosts-title">
+      <div class="container section">
+        <div class="section-heading">
+          <div><p class="eyebrow">03 / HOST MONITORING</p><h2 id="hosts-title">The local network</h2></div>
+          <span class="section-note">Silence does not establish safety.</span>
+        </div>
+        <div class="escalation-controls">
+          <p id="escalation-status" class="section-note escalation-summary">Policy escalation status unavailable.</p>
+          <div class="mode-control"><label for="escalation-mode">Escalation mode</label>
+            <select id="escalation-mode" disabled aria-describedby="mode-result">
+              <option value="" disabled>Unavailable</option>
+              <option value="off">Off</option>
+              <option value="observe">Observe</option>
+              <option value="enforce">Enforce</option>
+            </select>
+          </div>
+        </div>
+        <p id="mode-result" class="command-result mode-result" role="status">Waiting for current controller state.</p>
+        <div id="host-grid" class="host-grid"><p class="empty">Host bindings will appear when the controller starts.</p></div>
+      </div>
+    </section>
+
+    <section id="activity" class="container section" aria-labelledby="activity-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">04 / FIREWALL</p><h2 id="activity-title">Decisions &amp; actions</h2></div>
+        <span class="section-note">Host actions: barrier and readback · mode: saved and applied</span>
+      </div>
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Firewall actions; scroll horizontally for more columns">
+        <table>
+          <thead><tr><th scope="col">Time</th><th scope="col">Action</th><th scope="col">Scope</th><th scope="col">Status</th><th scope="col">Detail</th></tr></thead>
+          <tbody id="operations"><tr><td colspan="5" class="empty">Waiting for controller actions.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="events" class="container section events-section" aria-labelledby="events-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">05 / SECURITY EVENTS</p><h2 id="events-title">Audit trail</h2></div>
+        <label class="search"><span class="sr-only">Filter security events</span><input id="event-filter" type="search" placeholder="Filter events…" maxlength="100"></label>
+      </div>
+      <div id="event-list" class="event-list"><p class="empty">Waiting for persisted events.</p></div>
+      <p class="table-note">Up to 100 persisted events from this controller run. Delivery retries are deduplicated within retained history.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner"><a class="brand" href="#overview">All Blue<span aria-hidden="true">≈</span></a><span id="run-id">No controller run available</span><span>Local lab controls</span></div>
+  </footer>
+</body>
+</html>
