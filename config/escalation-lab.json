@@ -1,0 +1,6 @@
+{
+  "mode": "enforce",
+  "window_seconds": 30,
+  "distinct_services": 5,
+  "eligible_hosts": ["h1", "h3"]
+}
