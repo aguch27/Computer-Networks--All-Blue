@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "all-blue"
+version = "0.1.0"
+description = "A local SDN firewall with traffic monitoring and audit logging"
+requires-python = ">=3.11"
+dependencies = ["os-ken==4.2.0"]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "playwright>=1.50"]
+
+[tool.setuptools.packages.find]
+include = ["all_blue*"]
+
+[tool.setuptools.package-data]
+all_blue = ["web/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
